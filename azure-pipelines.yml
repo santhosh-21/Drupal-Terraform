@@ -1,0 +1,63 @@
+stages:
+  - stage: validate
+    jobs:
+    - job: validate
+      continueOnError: false
+      steps:
+      - task: TerraformInstaller@0
+        displayName: 'install'
+        inputs:
+          terraformVersion: 'latest'
+      - task: TerraformTaskV2@2
+        displayName: 'Init'
+        inputs:
+          provider: 'aws'
+          workingDirectory: terraform
+          command: 'init'
+          backendServiceAWS: 'terraform-aws'
+          backendAWSBucketName: 's3-terraform-state'
+          backendAWSKey: 'terraform.tfstate'
+      - task: TerraformTaskV2@2
+        displayName: 'validate'
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+  - stage: apply
+    jobs:
+    - deployment: deploy_terraform
+      continueOnError: false
+      environment: 'dev'
+      strategy:
+       runOnce:
+         deploy:
+           steps:
+             - checkout: self
+             - task: TerraformInstaller@0
+               displayName: 'install'
+               inputs:
+                 terraformVersion: 'latest'
+
+             - task: TerraformTaskV2@2
+               displayName: 'init'
+               inputs:
+                 provider: 'aws'
+                 workingDirectory: terraform
+                 command: 'init'
+                 backendServiceAWS: 'terraform-aws'
+                 backendAWSBucketName: 's3-terraform-state'
+                 backendAWSKey: 'terraform.tfstate'
+
+             - task: TerraformTaskV2@2
+               displayName: 'plan'
+               inputs:
+                 provider: 'aws'
+                 workingDirectory: terraform
+                 command: 'plan'
+                 environmentServiceNameAWS: 'terraform-aws'
+             - task: TerraformTaskV2@2
+               displayName: 'apply'
+               inputs:
+                 provider: 'aws'
+                 workingDirectory: terraform
+                 command: 'apply'
+                 environmentServiceNameAWS: 'terraform-aws'
