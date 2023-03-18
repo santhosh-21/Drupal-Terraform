@@ -6,7 +6,7 @@ This repository contains an example set of [Terraform](https://terraform.io) man
 To Test in local environments
 * Setup AWS CLI in your local environment (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) 
 * Setup Terraform in your local environment (https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
-* Cretae an AWS Account (https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
+* Create an AWS Account (https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
 * Create an access key from the security credentials (https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html)
 * Configure access key and Secret keys using 'aws configure' (https://docs.aws.amazon.com/cli/latest/reference/configure/)
 * Create an s3 bucket for storing your terraform state (https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
